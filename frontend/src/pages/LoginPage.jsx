@@ -22,7 +22,7 @@ const LoginPage = () => {
       setTimeout(() => {
         setIsLoading(false);
         setStep(2);
-        toast.success(`OTP sent to ${mobile}`);
+        toast.success(`Demo Mode: Use OTP "1234"`, { duration: 5000 });
       }, 1000);
     }
   };

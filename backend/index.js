@@ -30,6 +30,11 @@ app.post('/api/auth/verify', (req, res) => {
     return res.status(400).json({ error: 'Mobile and OTP required' });
   }
 
+  // Demo validation: Check for 1234
+  if (otp !== '1234') {
+    return res.status(401).json({ success: false, error: 'Invalid OTP' });
+  }
+
   // Generate a mock token
   const token = `mock-token-${mobile}`;
   users[token] = { mobile };
