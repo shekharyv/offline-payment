@@ -56,20 +56,21 @@ const HomePage = () => {
       try {
         await paymentService.createPayment(amount, recipient);
       } catch (e) {
-        console.warn('Backend unavailable, proceeding with offline dialer regardless.');
+        console.warn('Backend unavailable');
       }
       
       setTimeout(() => {
         setIsPreparing(false);
-        const ussdCode = `*99*1*${recipient}*${amount}%23`;
         
-        // Push user safely to actual phone dialer
+        // Use high-compatibility USSD string for iPhone/Strict Carriers
+        // We dial *99# directly to avoid the 'Unknown Error' on complex strings
+        const ussdCode = `*99%23`; 
+        
+        toast.success("Initiating Secure *99# Connection...");
         window.location.href = `tel:${ussdCode}`;
         
-        // Immediately Advance app state to "waiting" state
         setStep(3);
         
-        // Give OS a second to execute 'tel' before marking ready
         setTimeout(() => {
           setIsAwaitingReturn(true);
         }, 1000);
