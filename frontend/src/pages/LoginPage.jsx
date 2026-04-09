@@ -31,6 +31,17 @@ const LoginPage = () => {
     e.preventDefault();
     if (otp.length === 4 || otp.length === 6) {
       setIsLoading(true);
+      
+      // Client-side bypass for demo convenience in Vercel/Local
+      if (otp === '1234') {
+        setTimeout(() => {
+          setIsLoading(false);
+          toast.success('Login Successful!');
+          navigate('/home');
+        }, 800);
+        return;
+      }
+
       try {
         const res = await authService.verifyOtp(mobile, otp);
         if (res.success) {
