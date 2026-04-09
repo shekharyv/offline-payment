@@ -52,7 +52,12 @@ const HomePage = () => {
     setIsPreparing(true);
     
     try {
-      await paymentService.createPayment(amount, recipient);
+      // API call to save history (we swallow errors for demo mode if backend is down)
+      try {
+        await paymentService.createPayment(amount, recipient);
+      } catch (e) {
+        console.warn('Backend unavailable, proceeding with offline dialer regardless.');
+      }
       
       setTimeout(() => {
         setIsPreparing(false);
@@ -72,7 +77,7 @@ const HomePage = () => {
       }, 1500);
 
     } catch (error) {
-      toast.error('Failed to initialize payment tracking');
+      toast.error('Something went wrong. Please try again.');
       setIsPreparing(false);
     }
   };
